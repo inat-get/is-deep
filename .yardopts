@@ -1,0 +1,5 @@
+--title "IS::Deep"
+--readme README.md
+--protected
+--no-private
+lib/**/*.rb
