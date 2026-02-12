@@ -11,13 +11,14 @@ module IS::Deep::ArrayStrategies
   UNION = lambda { |base, other| base | other }
 
   class KeyBased
+    
     DEFAULT_KEY_CANDIDATES = [:id, :name, :key, :env, :host].freeze
 
-    def initialize(key = nil)
+    def initialize key = nil
       @key = key
     end
 
-    def call(base, other)
+    def call base, other
       effective_key = @key || detect_key(base)
 
       unless effective_key
@@ -31,14 +32,14 @@ module IS::Deep::ArrayStrategies
 
     private
 
-    def detect_key(base)
+    def detect_key base
       return nil if base.empty?
       return nil unless base.first.is_a?(Hash)
 
       DEFAULT_KEY_CANDIDATES.find { |k| base.first.key?(k) }
     end
 
-    def index_by_key(array, key)
+    def index_by_key array, key
       indexed = {}
       array.each do |elem|
         next unless elem.is_a?(Hash)
@@ -48,7 +49,7 @@ module IS::Deep::ArrayStrategies
       indexed
     end
 
-    def merge_indexed(result, other, indexed, key)
+    def merge_indexed result, other, indexed, key
       other.each do |elem|
         unless elem.is_a?(Hash)
           result << elem

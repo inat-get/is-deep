@@ -9,7 +9,10 @@ class Hash
   # @return [Hash]
   def deep_dup
     visited_wrap do |visited|
+      self_id = self.object_id
+      return visited[self_id] if visited.has_key?(self_id)
       result = {}
+      visited[self_id] = result
       if self.default_proc != nil
         result.default_proc = self.default_proc
       elsif self.default != nil
@@ -18,14 +21,14 @@ class Hash
       self.each do |key, value|
         id = value.object_id
         result[key] = if visited.has_key?(id)
-            visited[id]
-          elsif value.respond_to?(:deep_dup)
-            visited[id] = value.deep_dup
-          elsif value.respond_to?(:dup)
-            visited[id] = value.dup
-          else
-            visited[id] = value
-          end
+          visited[id]
+        elsif value.respond_to?(:deep_dup)
+          visited[id] = value.deep_dup
+        elsif value.respond_to?(:dup)
+          visited[id] = value.dup
+        else
+          visited[id] = value
+        end
       end
       result
     end
@@ -72,7 +75,10 @@ class Array
   # @return [Array]
   def deep_dup
     visited_wrap do |visited|
+      self_id = self.object_id
+      return visited[self_id] if visited.has_key?(self_id)
       result = []
+      visited[self_id] = result
       self.each do |item|
         id = item.object_id
         value = if visited.has_key?(id)
