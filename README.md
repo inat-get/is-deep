@@ -1,5 +1,10 @@
 # is-deep
 
+[![GitHub License](https://img.shields.io/github/license/inat-get/is-deep)](LICENSE)
+[![Gem Version](https://badge.fury.io/rb/is-deep.svg?icon=si%3Arubygems)](https://badge.fury.io/rb/is-deep)
+[![Ruby](https://github.com/inat-get/is-deep/actions/workflows/ruby.yml/badge.svg)](https://github.com/inat-get/is-deep/actions/workflows/ruby.yml) 
+![Coverage](coverage-badge.svg)
+
 Deep merge implementation for Ruby with configurable array strategies and circular reference protection.
 
 ## Installation
