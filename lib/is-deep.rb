@@ -6,7 +6,17 @@ require_relative 'is-deep/strategies'
 class Hash
   include IS::Deep
 
-  # @return [Hash]
+  # Creates deep copy of hash with all nested structures.
+  #
+  # Handles circular references correctly. Preserves default values
+  # and default_proc if present.
+  #
+  # @return [Hash] Deep copy of self
+  # @example
+  #   h = { a: { b: 1 } }
+  #   copy = h.deep_dup
+  #   copy[:a][:b] = 2
+  #   h[:a][:b] # => 1 (unchanged)
   def deep_dup
     visited_wrap do |visited|
       self_id = self.object_id
@@ -34,7 +44,19 @@ class Hash
     end
   end
 
-  # @return [self]
+  # Deep merges other hash into self, modifying receiver.
+  #
+  # Recursively merges nested hashes. For conflicting values where
+  # old value responds to #can_merge? and returns true, attempts
+  # recursive merge. Otherwise replaces with new value.
+  #
+  # @param other [Hash, #to_hash] Hash or hash-like object to merge
+  # @param array_strategy [#call, nil] Override array merge strategy
+  # @return [self] Modified receiver
+  # @example
+  #   h = { a: { b: 1 } }
+  #   h.deep_merge!({ a: { c: 2 } })
+  #   h # => { a: { b: 1, c: 2 } }
   def deep_merge! other, array_strategy: nil
     visited_wrap do |visited|
       id = self.object_id
@@ -63,6 +85,10 @@ class Hash
     end
   end
 
+  # Checks if other can be merged with this hash.
+  #
+  # @param other [Object] Object to check
+  # @return [Boolean] True if other is hash-like
   def can_merge?(other)
     other.is_a?(Hash) || other.respond_to?(:to_hash)
   end
@@ -72,7 +98,11 @@ end
 class Array
   include IS::Deep
 
-  # @return [Array]
+  # Creates deep copy of array with all nested structures.
+  #
+  # Handles circular references correctly.
+  #
+  # @return [Array] Deep copy of self
   def deep_dup
     visited_wrap do |visited|
       self_id = self.object_id
@@ -96,7 +126,15 @@ class Array
     end
   end
 
-  # @return [self]
+  # Deep merges other array into self, modifying receiver.
+  #
+  # Uses configured or provided array_strategy to determine
+  # merge semantics. Strategy receives (base, other) and returns
+  # result array.
+  #
+  # @param other [Array, #to_ary] Array or array-like object to merge
+  # @param array_strategy [#call, nil] Override array merge strategy
+  # @return [self] Modified receiver
   def deep_merge! other, array_strategy: nil
     visited_wrap do |visited|
       id = self.object_id
@@ -120,6 +158,10 @@ class Array
     end
   end
 
+  # Checks if other can be merged with this array.
+  #
+  # @param other [Object] Object to check
+  # @return [Boolean] True if other is array-like
   def can_merge? other
     other.is_a?(Array) || other.respond_to?(:to_ary)
   end
