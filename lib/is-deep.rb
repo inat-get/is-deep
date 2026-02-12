@@ -1,55 +1,7 @@
 # frozen_string_literal: true
 
-module IS; end
-
-module IS::Deep
-
-  # @return [IS::Deep]
-  def deep_merge other
-    base = if self.respond_to?(:deep_dup)
-        self.deep_dup
-      elsif self.respond_to?(:dup)
-        self.dup
-      else
-        self
-      end
-    if base.respond_to?(:deep_merge!)
-      base.deep_merge! other
-    elsif base.respond_to?(:merge)
-      base.merge other
-    elsif base.respond_to?(:merge!)
-      base.merge! other
-    else
-      raise NoMethodError, "No merge methods in receiver (#{base.class})", caller_locations
-    end
-  end
-
-  private
-
-  def visited_data
-    Thread::current[:deep_merge_visited_data] ||= { data: {}, level: 0 }
-  end
-
-  def reset_visited_data!
-    Thread::current[:deep_merge_visited_data] = nil
-  end
-
-  protected
-
-  # @private
-  def visited_wrap
-    raise ArgumentError, "Block is required", caller_locations unless block_given?
-    data = visited_data
-    data[:level] += 1
-    yield data[:data]
-  ensure
-    data[:level] -= 1
-    if data[:level] == 0
-      reset_visited_data!
-    end
-  end
-
-end
+require_relative 'is-deep/core'
+require_relative 'is-deep/strategies'
 
 class Hash
   include IS::Deep
@@ -80,23 +32,23 @@ class Hash
   end
 
   # @return [self]
-  def deep_merge! other
+  def deep_merge! other, array_strategy: nil
     visited_wrap do |visited|
       id = self.object_id
       return self if visited.has_key?(id)
       visited[id] = self
       source = if other.is_a?(Hash)
-          other
-        elsif other.respond_to?(:to_hash)
-          other.to_hash
-        else
-          raise ArgumentError, "Unsupported type of source: (#{other.class})", caller_locations
-        end
+        other
+      elsif other.respond_to?(:to_hash)
+        other.to_hash
+      else
+        raise ArgumentError, "Unsupported type of source: (#{ other.class })", caller_locations
+      end
       source.each do |key, value|
         if self.has_key?(key)
           old = self[key]
           if old.respond_to?(:can_merge?) && old.can_merge?(value)
-            old.deep_merge! value
+            old.deep_merge! value, array_strategy: array_strategy
           else
             self[key] = value
           end
@@ -108,7 +60,7 @@ class Hash
     end
   end
 
-  def can_merge? other
+  def can_merge?(other)
     other.is_a?(Hash) || other.respond_to?(:to_hash)
   end
 
@@ -139,30 +91,25 @@ class Array
   end
 
   # @return [self]
-  def deep_merge! other
+  def deep_merge! other, array_strategy: nil
     visited_wrap do |visited|
       id = self.object_id
       return self if visited.has_key?(id)
       visited[id] = self
       source = if other.is_a?(Array)
           other
-        elsif other.respond_to(:to_ary)
+        elsif other.respond_to?(:to_ary)
           other.to_ary
         else
           raise ArgumentError, "Unsupported type of source: (#{other.class})", caller_locations
         end
-      source.each do |item|
-        idx = self.index item
-        if idx
-          if self[idx].respond_to?(:can_merge?) && self[idx].can_merge?(item)
-            self[idx].deep_merge! item
-          else
-            self[idx] = item
-          end
-        else
-          self << item
-        end
-      end
+
+      strategy = array_strategy || IS::Deep.array_strategy
+      result = strategy.call(self, source)
+
+      self.clear
+      result.each { |item| self << item }
+
       self
     end
   end
@@ -172,3 +119,4 @@ class Array
   end
 
 end
+
