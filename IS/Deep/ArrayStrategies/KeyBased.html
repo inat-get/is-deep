@@ -10,9 +10,9 @@
   
 </title>
 
-  <link rel="stylesheet" href="../../../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../../css/style.css" type="text/css">
 
-  <link rel="stylesheet" href="../../../css/common.css" type="text/css" />
+  <link rel="stylesheet" href="../../../css/common.css" type="text/css">
 
 <script type="text/javascript">
   pathId = "IS::Deep::ArrayStrategies::KeyBased";
@@ -27,6 +27,8 @@
 
   </head>
   <body>
+    <div id="main_progress" aria-hidden="true"></div>
+
     <div class="nav_wrap">
       <iframe id="nav" src="../../../class_list.html?1"></iframe>
       <div id="resizer"></div>
@@ -94,18 +96,17 @@
   
   <dl>
     <dt>Defined in:</dt>
-    <dd>lib/is-deep/strategies.rb</dd>
+    <dd>lib/is-deep/strategies.rb
+</dd>
   </dl>
   
 </div>
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-<p>Key-based merge strategy for arrays of hashes.</p>
-
-<p>Matches elements by specified or auto-detected key, then deep merges matching elements. Unmatched elements are appended.</p>
-
+    <p>Key-based merge strategy for arrays of hashes.</p>
+<p>Matches elements by specified or auto-detected key, then deep merges
+matching elements. Unmatched elements are appended.</p>
 
   </div>
 </div>
@@ -115,18 +116,14 @@
     <h4 class="tag_title">Examples:</h4>
     
       
-        <h5 class="example_title"><div class='inline'>
-<p>Auto-detect key from common candidates (:id, :name, :key, :env, :host)</p>
-</div></h5>
+        <h5 class="example_title"><div class='inline'><p>Auto-detect key from common candidates (:id, :name, :key, :env, :host)</p></div></h5>
       
       <pre class="example code"><code><span class='id identifier rubyid_strategy'>strategy</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../../Deep.html" title="IS::Deep (module)">Deep</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../ArrayStrategies.html" title="IS::Deep::ArrayStrategies (module)">ArrayStrategies</a></span></span><span class='op'>::</span><span class='const'>KeyBased</span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="#initialize-instance_method" title="IS::Deep::ArrayStrategies::KeyBased#initialize (method)">new</a></span></span>
 <span class='lbracket'>[</span><span class='lbrace'>{</span> <span class='label'>id:</span> <span class='int'>1</span><span class='comma'>,</span> <span class='label'>val:</span> <span class='int'>1</span> <span class='rbrace'>}</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_deep_merge'>deep_merge</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='lbrace'>{</span> <span class='label'>id:</span> <span class='int'>1</span><span class='comma'>,</span> <span class='label'>val:</span> <span class='int'>2</span> <span class='rbrace'>}</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>array_strategy:</span> <span class='id identifier rubyid_strategy'>strategy</span><span class='rparen'>)</span>
 <span class='comment'># =&gt; [{ id: 1, val: 2 }]</span></code></pre>
     
       
-        <h5 class="example_title"><div class='inline'>
-<p>Explicit key</p>
-</div></h5>
+        <h5 class="example_title"><div class='inline'><p>Explicit key</p></div></h5>
       
       <pre class="example code"><code><span class='id identifier rubyid_strategy'>strategy</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../../Deep.html" title="IS::Deep (module)">Deep</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../ArrayStrategies.html" title="IS::Deep::ArrayStrategies (module)">ArrayStrategies</a></span></span><span class='op'>::</span><span class='const'>KeyBased</span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="#initialize-instance_method" title="IS::Deep::ArrayStrategies::KeyBased#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='symbol'>:service_name</span><span class='rparen'>)</span></code></pre>
     
@@ -165,9 +162,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Execute merge strategy.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Execute merge strategy.</p></div></span>
   
 </li>
 
@@ -191,14 +186,13 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Initialize with optional explicit key.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'><p>Initialize with optional explicit key.</p></div></span>
   
 </li>
 
       
     </ul>
+    
   
 
 <div id="constructor_details" class="method_details_list">
@@ -215,9 +209,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Initialize with optional explicit key.</p>
-
+    <p>Initialize with optional explicit key.</p>
 
   </div>
 </div>
@@ -237,9 +229,8 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>Key for matching elements. If nil, attempts auto-detection from first element.</p>
-</div>
+        <div class='inline'><p>Key for matching elements.
+If nil, attempts auto-detection from first element.</p></div>
       
     </li>
   
@@ -288,14 +279,10 @@
     
   <div class="note notetag">
     <strong>Note:</strong>
-    <div class='inline'>
-<p>Falls back to CONCAT behavior if key cannot be determined</p>
-</div>
+    <div class='inline'><p>Falls back to CONCAT behavior if key cannot be determined</p></div>
   </div>
 
-
 <p>Execute merge strategy.</p>
-
 
   </div>
 </div>
@@ -313,9 +300,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>Original array</p>
-</div>
+        <div class='inline'><p>Original array</p></div>
       
     </li>
   
@@ -329,9 +314,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>Array to merge into base</p>
-</div>
+        <div class='inline'><p>Array to merge into base</p></div>
       
     </li>
   
@@ -348,9 +331,7 @@
       
       
         &mdash;
-        <div class='inline'>
-<p>Merged result</p>
-</div>
+        <div class='inline'><p>Merged result</p></div>
       
     </li>
   
@@ -398,9 +379,9 @@
 </div>
 
       <div id="footer">
-  Generated on Thu Feb 12 01:43:46 2026 by
+  Generated on Sun Aug 23 22:37:42 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.38 (ruby-3.4.8).
+  0.9.45 (ruby-3.4.10).
 </div>
 
     </div>
