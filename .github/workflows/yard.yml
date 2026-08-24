@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v7
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
-        with: 
+        with:
           ruby-version: 3.4
           bundler-cache: true
       - name: Build
@@ -24,7 +24,7 @@ jobs:
           echo "Build..."
           bundle exec yardoc
       - name: Publish
-        uses: jekyll-is/action-jekyll-is-publish@v1
+        uses: jekyll-is/action-jekyll-is-publish@v2.1
         with:
           label: 'YARD Docs Pages'
           sync-dir: 'doc'
