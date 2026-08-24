@@ -7,7 +7,7 @@ end
 # @api private
 module IS::Deep::Info
   NAME     = 'is-deep'
-  VERSION  = '0.8.0'
+  VERSION  = '0.8.0.2'
   SUMMARY  = 'Deep merge implementation'
   AUTHOR   = 'Ivan Shikhalev'
   LICENSE  = 'LGPL-3.0-only'

@@ -35,7 +35,7 @@ class Hash
         elsif value.respond_to?(:deep_dup)
           visited[id] = value.deep_dup
         elsif value.respond_to?(:dup)
-          visited[id] = value.dup
+          visited[id] = value.dup rescue value
         else
           visited[id] = value
         end
@@ -116,7 +116,7 @@ class Array
           elsif item.respond_to?(:deep_dup)
             visited[id] = item.deep_dup
           elsif item.respond_to?(:dup)
-            visited[id] = item.dup
+            visited[id] = item.dup rescue item
           else
             visited[id] = item
           end
@@ -167,4 +167,3 @@ class Array
   end
 
 end
-

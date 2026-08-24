@@ -57,7 +57,7 @@ module IS::Deep
     base = if self.respond_to?(:deep_dup)
         self.deep_dup
       elsif self.respond_to?(:dup)
-        self.dup
+        self.dup rescue self
       else
         self
       end
