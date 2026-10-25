@@ -167,3 +167,11 @@ class Array
   end
 
 end
+
+class Module
+
+  def deep_dup
+    self
+  end
+
+end

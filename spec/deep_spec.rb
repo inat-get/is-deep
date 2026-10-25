@@ -378,5 +378,10 @@ RSpec.describe IS::Deep do
       base = { a: { b: { c: 1 } } }
       expect(base.deep_merge({})).to eq(base)
     end
+
+    it "classes and modules" do
+      expect([String].deep_dup).to eq([String])
+      expect([Kernel].deep_dup).to eq([Kernel])
+    end
   end
 end
