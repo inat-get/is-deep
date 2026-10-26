@@ -141,9 +141,9 @@ class Array
       return self if visited.has_key?(id)
       visited[id] = self
       source = if other.is_a?(Array)
-          other
+          other.deep_dup
         elsif other.respond_to?(:to_ary)
-          other.to_ary
+          other.to_ary.deep_dup
         else
           raise ArgumentError, "Unsupported type of source: (#{other.class})", caller_locations
         end
